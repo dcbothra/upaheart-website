@@ -13,12 +13,15 @@ export async function uploadToS3(file: File) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to get upload URL');
+            const errorText = await response.text();
+            console.error('API Error:', errorText);
+            throw new Error(`Failed to get upload URL: ${response.status} ${errorText}`);
         }
 
         const { uploadUrl, fileUrl } = await response.json();
+        console.log("Got upload URL:", uploadUrl);
 
-        // 2. Upload the file directly to S3
+        // 2. Upload the file directly to S3/Supabase
         const uploadResponse = await fetch(uploadUrl, {
             method: 'PUT',
             headers: {
@@ -28,13 +31,15 @@ export async function uploadToS3(file: File) {
         });
 
         if (!uploadResponse.ok) {
-            console.error('S3 Upload Error:', await uploadResponse.text());
-            throw new Error('Failed to upload file to storage');
+            const uploadErrorText = await uploadResponse.text();
+            console.error('Storage Upload Error:', uploadErrorText);
+            throw new Error(`Failed to upload to storage: ${uploadResponse.status} ${uploadErrorText}`);
         }
 
         return fileUrl;
     } catch (error) {
         console.error('Upload flow error:', error);
+        alert(`Upload Debug Error: ${(error as Error).message}`); // Show error to user for debugging
         throw error;
     }
 }
