@@ -25,7 +25,7 @@ export default async function handler(
         // Sanitize filename
         const cleanName = filename.replace(/[^a-zA-Z0-9.-]/g, '');
         const uniquePath = `uploads/${Date.now()}-${cleanName}`;
-        const bucketName = 'upaheart-uploads'; // We will ask user to create this "public" bucket
+        const bucketName = 'upaheart-pictures'; // User confirmed bucket name
 
         // Generate a secure Signed Upload URL
         // This allows the frontend to upload directly to this path
