@@ -11,11 +11,13 @@ export const PRODUCTS: Product[] = [
     longDescription: 'Crafted with precision using high-grade PLA filament, our signature Lithophane Lamp transforms your cherished digital memories into a tangible, glowing masterpiece. When turned off, it appears as a textured white sculpture. When lit, the varying thickness of the 3D print reveals your photo in stunning high-definition grayscale detail. Includes a wooden base and warm-white LED integration.',
     features: ['Custom 3D Print from your photo', 'Warm LED Warm Backlight', 'Premium Oak Wood Base', 'USB Powered'],
     images: [
-      'https://picsum.photos/id/338/800/800',
-      'https://picsum.photos/id/55/800/800',
-      'https://picsum.photos/id/60/800/800'
+      '/main.png',
+      '/Post_3.png',
+      '/Process.png',
+      '/On-Off.png'
     ]
   },
+  /* 
   {
     id: 'p2',
     name: 'Geometric Vase (Obsidian)',
@@ -58,6 +60,7 @@ export const PRODUCTS: Product[] = [
       'https://picsum.photos/id/232/800/800'
     ]
   }
+  */
 ];
 
 export const CORE_VALUES = [
