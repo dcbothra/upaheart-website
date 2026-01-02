@@ -14,7 +14,7 @@ export const Home: React.FC = () => {
       <section className="relative h-screen w-full bg-warm-100 flex items-center justify-center overflow-hidden z-0">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1635322966219-b75ed372eb01?q=80&w=2000&auto=format&fit=crop"
+            src="/hero.png"
             alt="Hero Background"
             className="w-full h-full object-cover opacity-90 sepia-[0.3]"
           />

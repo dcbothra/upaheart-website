@@ -322,11 +322,16 @@ export const Checkout: React.FC = () => {
                                     {/* Calculate totals locally for display */}
                                     {(() => {
                                         const originalTotal = cart.reduce((acc, item) => acc + (item.originalPrice || item.price), 0);
+                                        // Product level discount (1499 -> 1199)
                                         const productDiscount = originalTotal - cartTotal;
 
-                                        // If coupon is applied, final due reduces further
+                                        // Coupon level discount (1199 -> 899)
                                         const couponDiscount = appliedCoupon ? appliedCoupon.discount : 0;
+
+                                        // Final calculations
                                         const finalTotal = cartTotal - couponDiscount;
+                                        const totalSavings = originalTotal - finalTotal;
+                                        const savingsPercentage = Math.round((totalSavings / originalTotal) * 100);
 
                                         return (
                                             <>
@@ -334,12 +339,6 @@ export const Checkout: React.FC = () => {
                                                     <span className="text-gray-500">Order Subtotal</span>
                                                     <span className="font-medium text-gray-400 line-through">₹{originalTotal.toFixed(2)}</span>
                                                 </div>
-                                                {productDiscount > 0 && (
-                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700">
-                                                        <span className="">Sale Discount</span>
-                                                        <span className="font-medium">-₹{productDiscount.toFixed(2)}</span>
-                                                    </div>
-                                                )}
 
                                                 {/* Coupon Input */}
                                                 <div className="py-2">
@@ -363,7 +362,7 @@ export const Checkout: React.FC = () => {
                                                     ) : (
                                                         <div className="flex justify-between items-center bg-green-50 border border-green-100 p-2 px-3 rounded-sm">
                                                             <span className="text-xs font-bold text-green-800 flex items-center gap-2">
-                                                                <CheckCircle className="w-3 h-3" /> {appliedCoupon.code}
+                                                                <CheckCircle className="w-3 h-3" /> {appliedCoupon.code} Applied
                                                             </span>
                                                             <button onClick={() => { setAppliedCoupon(null); setCouponCode(''); setCouponMessage({ text: '', isError: false }) }} className="text-[10px] text-green-700 underline">Remove</button>
                                                         </div>
@@ -373,10 +372,11 @@ export const Checkout: React.FC = () => {
                                                     )}
                                                 </div>
 
-                                                {appliedCoupon && (
-                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700 font-bold">
-                                                        <span className="">Coupon Discount</span>
-                                                        <span className="font-medium">-₹{couponDiscount.toFixed(2)}</span>
+                                                {/* Aggregated Savings Display */}
+                                                {totalSavings > 0 && (
+                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700 font-bold bg-green-50/50 p-2 rounded-sm border border-green-100/50">
+                                                        <span>Total Savings ({savingsPercentage}% OFF)</span>
+                                                        <span className="font-medium">-₹{totalSavings.toFixed(2)}</span>
                                                     </div>
                                                 )}
 
