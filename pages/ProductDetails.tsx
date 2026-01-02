@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../constants';
 import { useCart } from '../context/CartContext';
-import { Check, Truck, Shield } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Check, Truck, Shield, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,8 +11,8 @@ export const ProductDetails: React.FC = () => {
   const { addToCart } = useCart();
 
   const product = PRODUCTS.find(p => p.id === id);
-
   const [selectedImage, setSelectedImage] = React.useState(product ? product.images[0] : '');
+  const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
 
   if (!product) {
     return <div className="pt-32 text-center bg-warm-50 min-h-screen font-display">Product not found.</div>;
@@ -34,7 +34,7 @@ export const ProductDetails: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="aspect-square bg-warm-100 overflow-hidden rounded-sm cursor-zoom-in"
-            onClick={() => window.open(selectedImage, '_blank')}
+            onClick={() => setIsLightboxOpen(true)}
           >
             <img src={selectedImage} alt={product.name} className="w-full h-full object-cover" />
           </motion.div>
@@ -100,6 +100,35 @@ export const ProductDetails: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isLightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <button
+              className="absolute top-6 right-6 text-white/80 hover:text-white transition-colors"
+              onClick={() => setIsLightboxOpen(false)}
+            >
+              <X className="w-10 h-10" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              src={selectedImage}
+              alt="Zoomed Product"
+              className="max-w-full max-h-full object-contain rounded-sm shadow-2xl"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

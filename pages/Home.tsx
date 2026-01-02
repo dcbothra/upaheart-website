@@ -94,21 +94,24 @@ export const Home: React.FC = () => {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="relative aspect-square overflow-hidden rounded-sm"
+              className="relative aspect-square" // Removed overflow-hidden from parent
             >
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover grayscale opacity-90"
-              >
-                <source src="/Craft.mp4" type="video/mp4" />
-              </video>
-              {/* Darker overlay to make white text pop */}
-              <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
-              <div className="absolute inset-0 border border-white/10 m-8 pointer-events-none" />
+              {/* Video Container - clipped */}
+              <div className="absolute inset-0 overflow-hidden rounded-sm">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover grayscale opacity-90"
+                >
+                  <source src="/Craft.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
+                <div className="absolute inset-0 border border-white/10 m-8 pointer-events-none" />
+              </div>
 
+              {/* Text Box - now allowed to overflow */}
               <div className="absolute bottom-6 right-6 md:bottom-12 md:-right-12 bg-white/95 backdrop-blur-md text-warm-900 p-6 md:p-8 max-w-[280px] md:max-w-xs shadow-2xl border border-white/20 z-20">
                 <p className="font-serif italic text-lg leading-relaxed text-slate-800">"The transition from a digital pixel to a physical layer is where the magic happens."</p>
               </div>
