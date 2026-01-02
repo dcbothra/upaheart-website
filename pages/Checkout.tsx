@@ -340,6 +340,13 @@ export const Checkout: React.FC = () => {
                                                     <span className="font-medium text-gray-400 line-through">₹{originalTotal.toFixed(2)}</span>
                                                 </div>
 
+                                                {productDiscount > 0 && (
+                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700">
+                                                        <span className="">Sale Discount</span>
+                                                        <span className="font-medium">-₹{productDiscount.toFixed(2)}</span>
+                                                    </div>
+                                                )}
+
                                                 {/* Coupon Input */}
                                                 <div className="py-2">
                                                     {!appliedCoupon ? (
@@ -372,11 +379,18 @@ export const Checkout: React.FC = () => {
                                                     )}
                                                 </div>
 
+                                                {appliedCoupon && (
+                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700">
+                                                        <span className="">Coupon Discount</span>
+                                                        <span className="font-medium">-₹{couponDiscount.toFixed(2)}</span>
+                                                    </div>
+                                                )}
+
                                                 {/* Aggregated Savings Display */}
                                                 {totalSavings > 0 && (
-                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700 font-bold bg-green-50/50 p-2 rounded-sm border border-green-100/50">
-                                                        <span>Total Savings ({savingsPercentage}% OFF)</span>
-                                                        <span className="font-medium">-₹{totalSavings.toFixed(2)}</span>
+                                                    <div className="flex justify-between items-center text-xs md:text-sm font-sans text-green-700 font-bold bg-green-50/50 p-2 rounded-sm border border-green-100/50 mt-2">
+                                                        <span className="tracking-tight">Total Savings ({savingsPercentage}% OFF)</span>
+                                                        <span className="font-medium whitespace-nowrap">-₹{totalSavings.toFixed(2)}</span>
                                                     </div>
                                                 )}
 
