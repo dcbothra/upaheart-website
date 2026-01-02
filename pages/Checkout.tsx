@@ -283,7 +283,7 @@ export const Checkout: React.FC = () => {
                                 <div className="space-y-4">
                                     <div className="flex justify-between items-center text-sm font-sans">
                                         <span className="text-gray-500">Order Subtotal</span>
-                                        <span className="font-medium text-warm-900">${cartTotal.toFixed(2)}</span>
+                                        <span className="font-medium text-warm-900">₹{cartTotal.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-sm font-sans">
                                         <span className="text-gray-500">Complimentary Shipping</span>
@@ -292,7 +292,7 @@ export const Checkout: React.FC = () => {
                                     <div className="pt-4 border-t border-warm-100 flex justify-between items-end">
                                         <div>
                                             <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400 block mb-1">Total Due</span>
-                                            <span className="text-4xl font-serif italic text-warm-900">${cartTotal.toFixed(2)}</span>
+                                            <span className="text-4xl font-serif italic text-warm-900">₹{cartTotal.toFixed(2)}</span>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-2">Secure Payment</p>
