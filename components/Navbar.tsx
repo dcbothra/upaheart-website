@@ -44,7 +44,11 @@ export const Navbar: React.FC = () => {
             {/* Centered Logo */}
             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden md:block">
               <Link to="/">
-                <img src="/Logo (White).png" alt="UpaHeart Logo" className="h-16 w-auto opacity-90 hover:opacity-100 transition-opacity" />
+                <img
+                  src="/Logo (White).png"
+                  alt="UpaHeart Logo"
+                  className={`h-16 w-auto transition-all duration-500 ${isHome && !isOpen ? 'opacity-90 hover:opacity-100' : 'invert opacity-80 hover:opacity-100'}`}
+                />
               </Link>
             </div>
 

@@ -109,7 +109,7 @@ export const Home: React.FC = () => {
               <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
               <div className="absolute inset-0 border border-white/10 m-8 pointer-events-none" />
 
-              <div className="absolute bottom-12 -right-6 md:-right-12 bg-white/95 backdrop-blur-md text-warm-900 p-8 max-w-xs shadow-2xl border border-white/20">
+              <div className="absolute bottom-6 right-6 md:bottom-12 md:-right-12 bg-white/95 backdrop-blur-md text-warm-900 p-6 md:p-8 max-w-[280px] md:max-w-xs shadow-2xl border border-white/20 z-20">
                 <p className="font-serif italic text-lg leading-relaxed text-slate-800">"The transition from a digital pixel to a physical layer is where the magic happens."</p>
               </div>
             </motion.div>
