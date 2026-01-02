@@ -96,16 +96,21 @@ export const Home: React.FC = () => {
               viewport={{ once: true }}
               className="relative aspect-square overflow-hidden rounded-sm"
             >
-              <img
-                src="/Craft.gif"
-                className="w-full h-full object-cover grayscale opacity-80"
-                alt="Our Craft"
-              />
-              <div className="absolute inset-0 bg-warm-900/20 mix-blend-overlay" />
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover grayscale opacity-90"
+              >
+                <source src="/Craft.mp4" type="video/mp4" />
+              </video>
+              {/* Darker overlay to make white text pop */}
+              <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
               <div className="absolute inset-0 border border-white/10 m-8 pointer-events-none" />
 
-              <div className="absolute bottom-12 -right-6 md:-right-12 bg-white/90 backdrop-blur-sm text-warm-900 p-8 max-w-xs shadow-2xl">
-                <p className="font-serif italic text-lg leading-relaxed">"The transition from a digital pixel to a physical layer is where the magic happens."</p>
+              <div className="absolute bottom-12 -right-6 md:-right-12 bg-white/95 backdrop-blur-md text-warm-900 p-8 max-w-xs shadow-2xl border border-white/20">
+                <p className="font-serif italic text-lg leading-relaxed text-slate-800">"The transition from a digital pixel to a physical layer is where the magic happens."</p>
               </div>
             </motion.div>
 

@@ -4,7 +4,8 @@ export const PRODUCTS: Product[] = [
   {
     id: 'p1',
     name: 'Lithophane Lamp Custom',
-    price: 120.00,
+    price: 1200,
+    originalPrice: 1500,
     category: 'Lighting',
     isCustomizable: true,
     description: 'A bespoke 3D printed lamp that reveals your memory when lit.',

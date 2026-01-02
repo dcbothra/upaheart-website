@@ -2,6 +2,7 @@ export interface Product {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number; // For discounted price display
   description: string;
   longDescription: string;
   category: string;
