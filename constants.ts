@@ -8,9 +8,9 @@ export const PRODUCTS: Product[] = [
     originalPrice: 1500,
     category: 'Lighting',
     isCustomizable: true,
-    description: 'A bespoke 3D printed lamp that reveals your memory when lit.',
-    longDescription: 'Crafted with precision using high-grade PLA filament, our signature Lithophane Lamp transforms your cherished digital memories into a tangible, glowing masterpiece. When turned off, it appears as a textured white sculpture. When lit, the varying thickness of the 3D print reveals your photo in stunning high-definition grayscale detail. Includes a wooden base and warm-white LED integration.',
-    features: ['Custom 3D Print from your photo', 'Warm LED Warm Backlight', 'Premium Oak Wood Base', 'USB Powered'],
+    description: 'Transform your favorite memory into a glowing masterpiece.',
+    longDescription: 'A premium customizable lithophane lamp that turns your digital photo into a high-definition physical texture. Unlit, it is a minimalist white sculpture. Lit, it reveals your image in stunning grayscale depth. A deeply personal gift that combines modern technology with timeless sentiment.',
+    features: ['Custom 3D Print from your photo', 'Warm LED Integration', 'Minimalist Design'],
     images: [
       '/main.png',
       '/Post_3.png',

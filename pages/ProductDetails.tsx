@@ -12,6 +12,8 @@ export const ProductDetails: React.FC = () => {
 
   const product = PRODUCTS.find(p => p.id === id);
 
+  const [selectedImage, setSelectedImage] = React.useState(product ? product.images[0] : '');
+
   if (!product) {
     return <div className="pt-32 text-center bg-warm-50 min-h-screen font-display">Product not found.</div>;
   }
@@ -28,17 +30,23 @@ export const ProductDetails: React.FC = () => {
         {/* Gallery */}
         <div className="space-y-4">
           <motion.div
+            key={selectedImage}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="aspect-square bg-warm-100 overflow-hidden rounded-sm"
+            className="aspect-square bg-warm-100 overflow-hidden rounded-sm cursor-zoom-in"
+            onClick={() => window.open(selectedImage, '_blank')}
           >
-            <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+            <img src={selectedImage} alt={product.name} className="w-full h-full object-cover" />
           </motion.div>
-          <div className="grid grid-cols-3 gap-3 md:gap-4">
-            {product.images.slice(1).map((img, idx) => (
-              <div key={idx} className="aspect-square bg-warm-100 overflow-hidden rounded-sm">
-                <img src={img} alt="detail" className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity" />
-              </div>
+          <div className="grid grid-cols-4 gap-3 md:gap-4">
+            {product.images.map((img, idx) => (
+              <button
+                key={idx}
+                onClick={() => setSelectedImage(img)}
+                className={`aspect-square bg-warm-100 overflow-hidden rounded-sm transition-all ${selectedImage === img ? 'ring-2 ring-warm-900 ring-offset-2' : 'opacity-70 hover:opacity-100'}`}
+              >
+                <img src={img} alt="detail" className="w-full h-full object-cover" />
+              </button>
             ))}
           </div>
         </div>
