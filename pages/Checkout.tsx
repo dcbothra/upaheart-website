@@ -12,6 +12,11 @@ export const Checkout: React.FC = () => {
     const [step, setStep] = useState<'details' | 'upload' | 'payment' | 'success'>('details');
     const [isProcessing, setIsProcessing] = useState(false);
 
+    // Coupon State
+    const [couponCode, setCouponCode] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState<{ code: string, discount: number } | null>(null);
+    const [couponMessage, setCouponMessage] = useState({ text: '', isError: false });
+
     const [formData, setFormData] = useState({
         firstName: '', lastName: '', email: '', address: '', city: '', zip: ''
     });
@@ -63,6 +68,38 @@ export const Checkout: React.FC = () => {
         }
     };
 
+    const handleApplyCoupon = async () => {
+        if (!couponCode) return;
+        setIsProcessing(true);
+        setCouponMessage({ text: '', isError: false });
+
+        try {
+            const res = await fetch('/api/validate-coupon', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ couponCode })
+            });
+            const data = await res.json();
+
+            if (data.valid) {
+                // Calculate total discount
+                // 300 discount per item
+                const totalDiscount = cart.reduce((acc, item) => acc + (data.discountPerUnit * item.quantity), 0);
+
+                setAppliedCoupon({ code: couponCode, discount: totalDiscount });
+                setCouponMessage({ text: 'Coupon applied!', isError: false });
+            } else {
+                setAppliedCoupon(null);
+                setCouponMessage({ text: 'Invalid code', isError: true });
+            }
+        } catch (err) {
+            console.error(err);
+            setCouponMessage({ text: 'Error applying coupon', isError: true });
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
     // Production Payment Call
     // Production Payment Call (Razorpay)
     const handlePayment = async () => {
@@ -90,7 +127,8 @@ export const Checkout: React.FC = () => {
                         images: item.images,
                         customizationFileUrl: item.customizationFileUrl
                     })),
-                    receipt: `receipt_${Date.now()}`
+                    receipt: `receipt_${Date.now()}`,
+                    couponCode: appliedCoupon ? appliedCoupon.code : null // Send coupon to backend
                 }),
             });
 
@@ -281,27 +319,87 @@ export const Checkout: React.FC = () => {
                                 <h2 className="text-3xl font-display text-warm-900">Summary</h2>
 
                                 <div className="space-y-4">
-                                    <div className="flex justify-between items-center text-sm font-sans">
-                                        <span className="text-gray-500">Order Subtotal</span>
-                                        <span className="font-medium text-warm-900">₹{cartTotal.toFixed(2)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center text-sm font-sans">
-                                        <span className="text-gray-500">Complimentary Shipping</span>
-                                        <span className="text-green-700 font-bold uppercase text-[10px] tracking-widest">Free</span>
-                                    </div>
-                                    <div className="pt-4 border-t border-warm-100 flex justify-between items-end">
-                                        <div>
-                                            <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400 block mb-1">Total Due</span>
-                                            <span className="text-4xl font-serif italic text-warm-900">₹{cartTotal.toFixed(2)}</span>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-2">Secure Payment</p>
-                                            <div className="flex gap-2 justify-end opacity-40">
-                                                <CreditCard className="w-4 h-4" />
-                                                <Lock className="w-4 h-4" />
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {/* Calculate totals locally for display */}
+                                    {(() => {
+                                        const originalTotal = cart.reduce((acc, item) => acc + (item.originalPrice || item.price), 0);
+                                        const productDiscount = originalTotal - cartTotal;
+
+                                        // If coupon is applied, final due reduces further
+                                        const couponDiscount = appliedCoupon ? appliedCoupon.discount : 0;
+                                        const finalTotal = cartTotal - couponDiscount;
+
+                                        return (
+                                            <>
+                                                <div className="flex justify-between items-center text-sm font-sans">
+                                                    <span className="text-gray-500">Order Subtotal</span>
+                                                    <span className="font-medium text-gray-400 line-through">₹{originalTotal.toFixed(2)}</span>
+                                                </div>
+                                                {productDiscount > 0 && (
+                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700">
+                                                        <span className="">Sale Discount</span>
+                                                        <span className="font-medium">-₹{productDiscount.toFixed(2)}</span>
+                                                    </div>
+                                                )}
+
+                                                {/* Coupon Input */}
+                                                <div className="py-2">
+                                                    {!appliedCoupon ? (
+                                                        <div className="flex gap-2">
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Coupon Code"
+                                                                className="flex-grow bg-warm-50 border border-warm-200 p-2 text-xs uppercase tracking-widest font-bold outline-none focus:border-warm-900 transition-colors"
+                                                                value={couponCode}
+                                                                onChange={(e) => setCouponCode(e.target.value)}
+                                                            />
+                                                            <button
+                                                                onClick={handleApplyCoupon}
+                                                                disabled={!couponCode || isProcessing}
+                                                                className="bg-warm-200 text-warm-900 px-4 text-[10px] font-bold uppercase tracking-widest hover:bg-warm-300 transition-colors disabled:opacity-50"
+                                                            >
+                                                                Apply
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex justify-between items-center bg-green-50 border border-green-100 p-2 px-3 rounded-sm">
+                                                            <span className="text-xs font-bold text-green-800 flex items-center gap-2">
+                                                                <CheckCircle className="w-3 h-3" /> {appliedCoupon.code}
+                                                            </span>
+                                                            <button onClick={() => { setAppliedCoupon(null); setCouponCode(''); setCouponMessage({ text: '', isError: false }) }} className="text-[10px] text-green-700 underline">Remove</button>
+                                                        </div>
+                                                    )}
+                                                    {couponMessage.text && (
+                                                        <p className={`text-[10px] mt-1 ${couponMessage.isError ? 'text-red-500' : 'text-green-600'}`}>{couponMessage.text}</p>
+                                                    )}
+                                                </div>
+
+                                                {appliedCoupon && (
+                                                    <div className="flex justify-between items-center text-sm font-sans text-green-700 font-bold">
+                                                        <span className="">Coupon Discount</span>
+                                                        <span className="font-medium">-₹{couponDiscount.toFixed(2)}</span>
+                                                    </div>
+                                                )}
+
+                                                <div className="flex justify-between items-center text-sm font-sans">
+                                                    <span className="text-gray-500">Shipping</span>
+                                                    <span className="text-green-700 font-bold uppercase text-[10px] tracking-widest">Free</span>
+                                                </div>
+                                                <div className="pt-4 border-t border-warm-100 flex justify-between items-end">
+                                                    <div>
+                                                        <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400 block mb-1">Total Due</span>
+                                                        <span className="text-4xl font-serif italic text-warm-900">₹{finalTotal.toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-2">Secure Payment</p>
+                                                        <div className="flex gap-2 justify-end opacity-40">
+                                                            <CreditCard className="w-4 h-4" />
+                                                            <Lock className="w-4 h-4" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        );
+                                    })()}
                                 </div>
 
                                 <div className="bg-warm-50 p-6 rounded-sm text-center">
