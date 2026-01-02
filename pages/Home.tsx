@@ -96,15 +96,11 @@ export const Home: React.FC = () => {
               viewport={{ once: true }}
               className="relative aspect-square overflow-hidden rounded-sm"
             >
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
+              <img
+                src="/Craft.gif"
                 className="w-full h-full object-cover grayscale opacity-80"
-              >
-                <source src="/Post_7.mp4" type="video/mp4" />
-              </video>
+                alt="Our Craft"
+              />
               <div className="absolute inset-0 bg-warm-900/20 mix-blend-overlay" />
               <div className="absolute inset-0 border border-white/10 m-8 pointer-events-none" />
 

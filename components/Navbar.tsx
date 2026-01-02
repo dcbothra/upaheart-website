@@ -38,13 +38,13 @@ export const Navbar: React.FC = () => {
               to="/"
               className={`text-2xl md:text-3xl font-display font-semibold tracking-tight transition-colors duration-500 ${isHome && !isOpen ? 'text-white' : 'text-warm-900'}`}
             >
-              UpaHe<span className="text-[#E31C25]">a</span>rt
+              Up<span className="text-[#E31C25]">a</span>Heart
             </Link>
 
             {/* Centered Logo */}
             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden md:block">
               <Link to="/">
-                <img src="/Logo (White).png" alt="UpaHeart Logo" className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity" />
+                <img src="/Logo (White).png" alt="UpaHeart Logo" className="h-16 w-auto opacity-90 hover:opacity-100 transition-opacity" />
               </Link>
             </div>
 
