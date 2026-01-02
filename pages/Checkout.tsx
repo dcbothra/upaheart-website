@@ -388,9 +388,8 @@ export const Checkout: React.FC = () => {
 
                                                 {/* Aggregated Savings Display */}
                                                 {totalSavings > 0 && (
-                                                    <div className="flex justify-between items-center text-xs md:text-sm font-sans text-green-700 font-bold bg-green-50/50 p-2 rounded-sm border border-green-100/50 mt-2">
+                                                    <div className="flex justify-center items-center text-xs md:text-sm font-sans text-green-700 font-bold bg-green-50/50 p-2 rounded-sm border border-green-100/50 mt-2">
                                                         <span className="tracking-tight">Total Savings ({savingsPercentage}% OFF)</span>
-                                                        <span className="font-medium whitespace-nowrap">-₹{totalSavings.toFixed(2)}</span>
                                                     </div>
                                                 )}
 
